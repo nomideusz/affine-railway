@@ -1,0 +1,8 @@
+{
+  "name": "AFFiNE | Open-Source Notion & Miro Alternative with Postgres",
+  "short_name": "AFFiNE Production",
+  "description": "Docs, whiteboards and databases in one workspace, self-hosted",
+  "category": "Other",
+  "image": "https://raw.githubusercontent.com/nomideusz/affine-railway/main/icon.svg",
+  "card_desc": "AFFiNE: the open-source Notion and Miro alternative. Docs, edgeless whiteboards and databases in one workspace, with real-time collaboration, on Postgres with pgvector."
+}

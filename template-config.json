@@ -1,0 +1,183 @@
+{
+  "services": {
+    "c56a509e-ed32-4e96-93c1-2973e4939d19": {
+      "icon": "https://raw.githubusercontent.com/nomideusz/affine-railway/main/icon.svg",
+      "name": "AFFiNE",
+      "build": {},
+      "deploy": {
+        "startCommand": "/bin/sh -c \"node ./scripts/self-host-predeploy.js && exec node ./dist/main.js\"",
+        "healthcheckPath": "/info",
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "ghcr.io/toeverything/affine:0.27.4"
+      },
+      "networking": {
+        "serviceDomains": {
+          "<hasDomain>": {}
+        }
+      },
+      "volumeMounts": {
+        "e5bb040f-4818-41c9-a81f-f77cc650dbd6": {
+          "mountPath": "/root/.affine"
+        }
+      },
+      "variables": {
+        "PORT": {
+          "defaultValue": "3010",
+          "description": "Port Railway routes to - leave as is",
+          "isOptional": false
+        },
+        "AFFINE_SERVER_PORT": {
+          "defaultValue": "3010",
+          "description": "Port AFFiNE listens on - must match PORT",
+          "isOptional": false
+        },
+        "LISTEN_ADDR": {
+          "defaultValue": "::",
+          "description": "Listen on IPv6 and IPv4 so Railway's private network can reach it",
+          "isOptional": false
+        },
+        "AFFINE_SERVER_EXTERNAL_URL": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+          "description": "Public URL of AFFiNE (invite links, OAuth callbacks, desktop app sign-in) - set it to your custom domain after adding one",
+          "isOptional": false
+        },
+        "DATABASE_URL": {
+          "defaultValue": "postgresql://${{Postgres.POSTGRES_USER}}:${{Postgres.POSTGRES_PASSWORD}}@${{Postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/${{Postgres.POSTGRES_DB}}",
+          "description": "Postgres (with pgvector) on the private network",
+          "isOptional": false
+        },
+        "REDIS_SERVER_HOST": {
+          "defaultValue": "${{Redis.RAILWAY_PRIVATE_DOMAIN}}",
+          "description": "Redis on the private network",
+          "isOptional": false
+        },
+        "REDIS_SERVER_PORT": {
+          "defaultValue": "6379",
+          "description": "Redis port",
+          "isOptional": false
+        },
+        "REDIS_SERVER_PASSWORD": {
+          "defaultValue": "${{Redis.REDIS_PASSWORD}}",
+          "description": "Redis password",
+          "isOptional": false
+        },
+        "AFFINE_INDEXER_ENABLED": {
+          "defaultValue": "false",
+          "description": "Full-text indexer needs a separate Manticore/Elasticsearch service; off like upstream's self-host compose",
+          "isOptional": false
+        },
+        "RAILWAY_HEALTHCHECK_TIMEOUT_SEC": {
+          "defaultValue": "600",
+          "description": "Every boot runs the database migrations before the health check can pass",
+          "isOptional": false
+        },
+        "MAILER_HOST": {
+          "defaultValue": "",
+          "description": "Optional SMTP server for invitations, sign-in links and password resets (Railway allows outbound SMTP on Pro only)",
+          "isOptional": true
+        },
+        "MAILER_PORT": {
+          "defaultValue": "465",
+          "description": "SMTP port",
+          "isOptional": true
+        },
+        "MAILER_USER": {
+          "defaultValue": "",
+          "description": "SMTP username",
+          "isOptional": true
+        },
+        "MAILER_PASSWORD": {
+          "defaultValue": "",
+          "description": "SMTP password",
+          "isOptional": true
+        },
+        "MAILER_SENDER": {
+          "defaultValue": "",
+          "description": "Sender, e.g. AFFiNE <noreply@example.com>",
+          "isOptional": true
+        }
+      }
+    },
+    "b3a58463-a4ae-46e8-a85d-7ca670c9d97f": {
+      "icon": "https://devicons.railway.app/i/postgresql.svg",
+      "name": "Postgres",
+      "build": {},
+      "deploy": {
+        "startCommand": null,
+        "healthcheckPath": null,
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "pgvector/pgvector:0.8.7-pg17"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "a0673481-7994-4bbb-a884-f4c98fac77c1": {
+          "mountPath": "/var/lib/postgresql/data"
+        }
+      },
+      "variables": {
+        "POSTGRES_DB": {
+          "defaultValue": "affine",
+          "description": "Database name",
+          "isOptional": false
+        },
+        "POSTGRES_USER": {
+          "defaultValue": "affine",
+          "description": "Database user",
+          "isOptional": false
+        },
+        "POSTGRES_PASSWORD": {
+          "defaultValue": "${{secret(32, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\")}}",
+          "description": "Auto-generated database password",
+          "isOptional": false
+        },
+        "PGDATA": {
+          "defaultValue": "/var/lib/postgresql/data/pgdata",
+          "description": "Data subdirectory - keeps Postgres happy on Railway volumes",
+          "isOptional": false
+        },
+        "RAILWAY_DEPLOYMENT_DRAINING_SECONDS": {
+          "defaultValue": "60",
+          "description": "Time for Postgres to shut down cleanly on redeploy",
+          "isOptional": false
+        }
+      }
+    },
+    "b8a55529-7822-47c5-a3b2-8e1841c1cce4": {
+      "icon": "https://devicons.railway.app/i/redis.svg",
+      "name": "Redis",
+      "build": {},
+      "deploy": {
+        "startCommand": "/bin/sh -c \"chown -R redis:redis /data && exec docker-entrypoint.sh redis-server --requirepass $REDIS_PASSWORD --appendonly yes\"",
+        "healthcheckPath": null,
+        "restartPolicyType": "ON_FAILURE",
+        "restartPolicyMaxRetries": 10
+      },
+      "source": {
+        "image": "redis:8.10.2-alpine"
+      },
+      "networking": {
+        "serviceDomains": {}
+      },
+      "volumeMounts": {
+        "0c49c000-2dbd-411d-b96b-dca2b3e9e3c7": {
+          "mountPath": "/data"
+        }
+      },
+      "variables": {
+        "REDIS_PASSWORD": {
+          "defaultValue": "${{secret(32, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\")}}",
+          "description": "Auto-generated Redis password",
+          "isOptional": false
+        }
+      }
+    }
+  }
+}
