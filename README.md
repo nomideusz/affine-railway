@@ -46,7 +46,7 @@ The stack is three services: AFFiNE, Postgres and Redis.
 
 **Full-text search indexer.** AFFiNE's optional server-side indexer needs a separate Manticore or Elasticsearch service, so it is off (`AFFINE_INDEXER_ENABLED=false`), as in upstream's own self-host compose. Search inside the apps still works locally.
 
-**Resources.** In testing the AFFiNE server idled at about 300 MB of RAM and the whole stack at about 400 MB, so it runs on the Hobby plan.
+**Resources.** In testing the AFFiNE server idled at 200–300 MB of RAM and the whole stack at about 450 MB, so it runs on the Hobby plan.
 
 ## Why Deploy AFFiNE on Railway?
 
