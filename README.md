@@ -1,6 +1,6 @@
 # Deploy and Host AFFiNE on Railway
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/affine-production?utm_medium=integration&utm_source=button&utm_campaign=affine-production)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/affine-production?referralCode=sLjDXb&utm_medium=integration&utm_source=button&utm_campaign=affine-production)
 
 [AFFiNE](https://affine.pro/) is the open-source Notion and Miro alternative: docs, an infinite edgeless whiteboard and databases in one workspace, with real-time collaboration, sharing, version history and desktop and mobile apps that sync to your own server. This template runs the official AFFiNE server with Postgres (with pgvector) and Redis, and keeps uploads and the server's signing key on a volume.
 
