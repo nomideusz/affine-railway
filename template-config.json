@@ -1,7 +1,7 @@
 {
   "services": {
     "c56a509e-ed32-4e96-93c1-2973e4939d19": {
-      "icon": "https://raw.githubusercontent.com/nomideusz/affine-railway/main/icon.svg",
+      "icon": "https://raw.githubusercontent.com/two-workspaces/affine/main/icon.svg",
       "name": "AFFiNE",
       "build": {},
       "deploy": {

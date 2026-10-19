@@ -30,7 +30,7 @@ The stack is three services: AFFiNE, Postgres and Redis.
 
 - [AFFiNE self-hosting documentation](https://docs.affine.pro/self-host-affine)
 - [AFFiNE on GitHub](https://github.com/toeverything/AFFiNE)
-- [Template source on GitHub](https://github.com/nomideusz/affine-railway)
+- [Template source on GitHub](https://github.com/two-workspaces/affine)
 
 ### Implementation Details
 
